@@ -14,14 +14,27 @@ class Post extends Component {
   }
 
   toggleEdit() {
-    console.log('TOGGLE EDIT');
-    // this.state.isEditing: !this.state.isEditing
+    // console.log('TOGGLE EDIT');
+    this.setState(st => ({ isEditing: !st.isEditing }));
   }
 
   render() {
     return (
       <div className="Post">
-        {this.state.isEditing ? <PostForm /> : <PostDetail />}
+        {this.state.isEditing ? (
+          <PostForm
+            post={this.props.post}
+            isEditing={this.state.isEditing}
+            toggleEdit={this.toggleEdit}
+            updatePost={this.props.updatePost}
+          />
+        ) : (
+          <PostDetail
+            post={this.props.post}
+            deletePost={this.props.deletePost}
+            toggleEdit={this.toggleEdit}
+          />
+        )}
       </div>
     );
   }

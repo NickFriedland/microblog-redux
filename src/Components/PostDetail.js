@@ -24,7 +24,7 @@ class PostDetail extends Component {
   }
 
   handleDelete() {
-    this.props.deletePost(this.props.id);
+    this.props.deletePost(this.props.post.id);
   }
 
   render() {

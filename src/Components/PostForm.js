@@ -12,13 +12,34 @@ class PostForm extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+  }
+
+  static defaultProps = {
+    addPost: () => console.log('Check wiring of update post'),
+    updatePost: () => console.log('Check wiring of add post')
+  };
+
+  componentDidMount() {
+    if (this.props.post) {
+      this.setState({ ...this.state, ...this.props.post });
+    }
   }
 
   handleSubmit(evt) {
     evt.preventDefault();
-    // console.log('EVENT', evt.target, 'STATE', this.state);
     const post = { ...this.state };
     this.props.addPost(post);
+  }
+
+  handleUpdate(evt) {
+    evt.preventDefault();
+    // Update state in routes (existing post is changed)
+    const post = { ...this.state };
+    // console.log('POST', post);
+    this.props.updatePost(post);
+    // calling toggleEdit prop
+    this.props.toggleEdit();
   }
 
   handleChange(evt) {
@@ -29,16 +50,34 @@ class PostForm extends Component {
   }
 
   render() {
+    let handleForm = this.props.isEditing
+      ? this.handleUpdate
+      : this.handleSubmit;
     return (
       <div className="PostForm">
         <h1>Post Form</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={handleForm}>
           <label htmlFor="title">Title:</label>
-          <input onChange={this.handleChange} type="text" name="title" />
+          <input
+            onChange={this.handleChange}
+            type="text"
+            name="title"
+            value={this.state.title}
+          />
           <label htmlFor="title">Description:</label>
-          <input onChange={this.handleChange} type="text" name="description" />
+          <input
+            onChange={this.handleChange}
+            type="text"
+            name="description"
+            value={this.state.description}
+          />
           <label htmlFor="title">Body:</label>
-          <input onChange={this.handleChange} type="text" name="body" />
+          <input
+            onChange={this.handleChange}
+            type="text"
+            name="body"
+            value={this.state.body}
+          />
           <button type="submit">Save</button>
           <button type="submit">Cancel</button>
         </form>

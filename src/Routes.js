@@ -11,9 +11,26 @@ import Post from './Components/Post';
 class Routes extends Component {
   constructor(props) {
     super(props);
-    this.state = { posts: [] };
+    this.state = {
+      posts: [
+        {
+          title: 'Hello',
+          description: 'Hope this works',
+          body: 'taco',
+          id: '1'
+        },
+        {
+          title: 'Hello',
+          description: 'Hope this works',
+          body: 'burrito',
+          id: '2'
+        }
+      ]
+    };
     this.addPost = this.addPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
+    this.renderPost = this.renderPost.bind(this);
+    this.updatePost = this.updatePost.bind(this);
   }
 
   addPost(post) {
@@ -27,10 +44,51 @@ class Routes extends Component {
   }
 
   deletePost(id) {
-    console.log('DELETE FN');
+    // console.log('DELETE FN');
     // take id param and compare against state posts array
+    this.setState(st => {
+      const results = st.posts.filter(post => id !== post.id);
+      return { posts: results };
+    });
+    this.props.history.replace('/');
     // If id found, remove that post form state
     // Return redirect to homepage
+  }
+
+  renderPost(routeProps) {
+    const postId = routeProps.match.params.postId;
+
+    // console.log('TARGET POST ID', postId);
+    // console.log('ROUTE PROPS', routeProps);
+    const results = this.state.posts.filter(post => post.id === postId);
+    // console.log('POST', post);
+    if (results.length) {
+      return (
+        <Post
+          post={results[0]}
+          deletePost={this.deletePost}
+          updatePost={this.updatePost}
+        />
+      );
+    }
+    // return this.props.history.replace('/');
+    return <Redirect to="/" />;
+  }
+
+  updatePost(updatedPost) {
+    // console.log('POST', post);
+    // determine if post id matches id of post in state
+    // Replace state post with updated post
+    // setState to replace prev state with new state
+    this.setState(st => {
+      const updatedPosts = st.posts.map(post => {
+        if (updatedPost.id === post.id) {
+          return { ...updatedPost };
+        }
+        return { ...post };
+      });
+      return { posts: updatedPosts };
+    });
   }
 
   render() {
@@ -52,7 +110,7 @@ class Routes extends Component {
             path="/new"
             render={() => <PostForm addPost={this.addPost} />}
           />
-          <Route exact path="/:postId" render={() => <Post />} />
+          <Route exact path="/:postId" render={this.renderPost} />
           <Route
             path="*"
             render={() => (
