@@ -19,9 +19,7 @@ class PostDetail extends Component {
     deletePost: () => console.log('DELETE AND REDIRECT')
   };
 
-  handleToggleEdit() {
-    this.props.toggleEdit();
-  }
+  handleToggleEdit() {}
 
   handleDelete() {
     this.props.deletePost(this.props.post.id);

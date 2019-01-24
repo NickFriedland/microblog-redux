@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 import PostForm from './Components/PostForm';
 import uuid from 'uuid/v4';
 import Post from './Components/Post';
+import PostList from './Components/PostList';
 // import Home from './Home.js';
 //import './Routes.css';
 
@@ -99,11 +100,7 @@ class Routes extends Component {
           <Route
             exact
             path="/"
-            render={() => (
-              <div>
-                <h1>HELLO FROM HOME!</h1>
-              </div>
-            )}
+            render={() => <PostList posts={this.state.posts} />}
           />
           <Route
             exact
