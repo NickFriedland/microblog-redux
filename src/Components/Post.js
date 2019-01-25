@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import PostForm from './PostForm';
-import PostDetail from './PostDetail';
+// import PostForm from './PostForm';
+import PostDetailContainer from '../Containers/PostDetailContainer';
+import PostFormContainer from '../Containers/PostFormContainer';
 //import './Post.css';
 // import styled from 'styled-components';
 
@@ -22,17 +23,20 @@ class Post extends Component {
     return (
       <div className="Post">
         {this.state.isEditing ? (
-          <PostForm
+          <PostFormContainer
             post={this.props.post}
             isEditing={this.state.isEditing}
             toggleEdit={this.toggleEdit}
-            updatePost={this.props.updatePost}
+            // updatePost={this.props.updatePost}
+            postId={this.props.postId}
           />
         ) : (
-          <PostDetail
+          <PostDetailContainer
             post={this.props.post}
-            deletePost={this.props.deletePost}
+            // deletePost={this.props.deletePost}
             toggleEdit={this.toggleEdit}
+            // addComment={this.props.addComment}
+            // deleteComment={this.props.deleteComment}
           />
         )}
       </div>

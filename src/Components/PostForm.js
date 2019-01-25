@@ -8,11 +8,14 @@ class PostForm extends Component {
     this.state = {
       title: '',
       description: '',
-      body: ''
+      body: '',
+      comments: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.cancelEdit = this.cancelEdit.bind(this);
+    this.cancelAddNew = this.cancelAddNew.bind(this);
   }
 
   static defaultProps = {
@@ -30,6 +33,7 @@ class PostForm extends Component {
     evt.preventDefault();
     const post = { ...this.state };
     this.props.addPost(post);
+    this.props.history.push('/');
   }
 
   handleUpdate(evt) {
@@ -49,10 +53,23 @@ class PostForm extends Component {
     });
   }
 
+  cancelEdit() {
+    // console.log('NO MORE EDITING');
+    this.props.toggleEdit();
+  }
+
+  cancelAddNew() {
+    // console.log('NUTHIN NEW');
+    this.props.history.push('/');
+  }
+
   render() {
     let handleForm = this.props.isEditing
       ? this.handleUpdate
       : this.handleSubmit;
+
+    let cancelAction = this.props.postId ? this.cancelEdit : this.cancelAddNew;
+
     return (
       <div className="PostForm">
         <h1>Post Form</h1>
@@ -79,7 +96,9 @@ class PostForm extends Component {
             value={this.state.body}
           />
           <button type="submit">Save</button>
-          <button type="submit">Cancel</button>
+          <button type="btn" onClick={cancelAction}>
+            Cancel
+          </button>
         </form>
       </div>
     );
