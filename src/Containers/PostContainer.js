@@ -5,6 +5,7 @@ import Post from '../Components/Post';
 
 class PostContainer extends Component {
   render() {
+    console.log('PROPS FROM POST CONTAINER', this.props);
     const result = this.props.posts.filter(
       post => post.id === this.props.postId
     );

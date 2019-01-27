@@ -24,6 +24,10 @@ class PostDetail extends Component {
     // deleteComment: () => console.log('Delete comment from post detail')
   };
 
+  async componentDidMount() {
+    await this.props.getPostDetailFromAPI(this.props.match.params.postId);
+  }
+
   handleToggleEdit() {
     this.props.toggleEdit();
   }
@@ -34,7 +38,9 @@ class PostDetail extends Component {
   }
 
   render() {
-    const { title, description, body, comments } = this.props.post;
+    console.log('GET REQUEST POST DETAIL', this.props);
+    const { title, description, body, comments, id } = this.props.post;
+
     return (
       <div className="PostDetail">
         <button onClick={this.handleToggleEdit}>Edit</button>
@@ -44,7 +50,7 @@ class PostDetail extends Component {
         <p>{body}</p>
         <CommentList
           comments={comments}
-          postId={this.props.post.id}
+          postId={id}
           // addComment={this.props.addComment}
           // deleteComment={this.props.deleteComment}
         />

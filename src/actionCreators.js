@@ -1,22 +1,48 @@
+import axios from 'axios';
+
 import {
-  DELETE_COMMENT,
-  ADD_COMMENT,
-  DELETE_POST,
   ADD_POST,
-  UPDATE_POST
+  UPDATE_POST,
+  DELETE_POST,
+  ADD_COMMENT,
+  DELETE_COMMENT
 } from './actionTypes';
 
-export function deleteComment(id, postId) {
-  return {
-    type: DELETE_COMMENT,
-    payload: { id, postId }
+export function getPostsFromAPI() {
+  return async function(dispatch) {
+    const res = await axios.get('http://localhost:5000/api/posts/');
+    // console.log('API WORKING?', res.data);
+    dispatch(gotPosts(res.data));
   };
 }
 
-export function addComment(text, postId) {
+function gotPosts(posts) {
+  return { type: 'LOAD_POSTS', payload: posts };
+}
+
+export function getPostDetailFromAPI(postId) {
+  return async function(dispatch) {
+    const res = await axios.get(`http://localhost:5000/api/posts/${postId}`);
+    // console.log('API WORKING?', res.data);
+    dispatch(gotPostById(res.data));
+  };
+}
+
+function gotPostById(post) {
+  return { type: 'LOAD_POST_DETAIL', payload: post };
+}
+
+export function addPost(post) {
   return {
-    type: ADD_COMMENT,
-    payload: { text, postId }
+    type: ADD_POST,
+    payload: { post }
+  };
+}
+
+export function updatePost(updatedPost) {
+  return {
+    type: UPDATE_POST,
+    payload: { updatedPost }
   };
 }
 
@@ -27,15 +53,15 @@ export function deletePost(postId) {
   };
 }
 
-export function addPost(post) {
+export function addComment(text, postId) {
   return {
-    type: ADD_POST,
-    payload: { post }
+    type: ADD_COMMENT,
+    payload: { text, postId }
   };
 }
-export function updatePost(updatedPost) {
+export function deleteComment(id, postId) {
   return {
-    type: UPDATE_POST,
-    payload: { updatedPost }
+    type: DELETE_COMMENT,
+    payload: { id, postId }
   };
 }
